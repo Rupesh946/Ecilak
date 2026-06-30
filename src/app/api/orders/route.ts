@@ -18,11 +18,6 @@ const checkoutSchema = z.object({
   couponCode: z.string().optional().nullable(),
 });
 
-const razorpay = new Razorpay({
-  key_id: process.env.RAZORPAY_KEY_ID || "",
-  key_secret: process.env.RAZORPAY_KEY_SECRET || "",
-});
-
 export async function GET() {
   try {
     const session = await getServerSession(authOptions);
@@ -46,6 +41,11 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID || "",
+      key_secret: process.env.RAZORPAY_KEY_SECRET || "",
+    });
+    
     const session = await getServerSession(authOptions);
     const jsonBody = await req.json();
     const result = checkoutSchema.safeParse(jsonBody);
