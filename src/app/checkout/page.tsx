@@ -81,20 +81,34 @@ export default function CheckoutPage() {
     toast.info("Preparing your order...");
 
     try {
-      // 1. ALLOCATE AND SYNC CART ITEMS IN DB FOR CHECKOUT
-      // We send all Zustand items to backend to ensure database cart matches local cart state
+      const firstItem = items[0];
+      if (!firstItem.variantId) {
+        toast.error("Your cart contains items that need to be refreshed. Please clear your cart and add the products again.");
+        clearCart();
+        setIsSubmitting(false);
+        router.push("/shop");
+        return;
+      }
+
       const cartRes = await fetch("/api/cart", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        // Add the first item first to create a cart, then sync subsequent items
         body: JSON.stringify({
-          variantId: items[0].variantId || items[0].id,
-          quantity: items[0].quantity,
+          variantId: firstItem.variantId,
+          quantity: firstItem.quantity,
         }),
       });
 
       if (!cartRes.ok) {
-        throw new Error("Failed to sync checkout bag with server");
+        const errorData = await cartRes.json().catch(() => ({}));
+        if (errorData.error === "Invalid variant ID" || errorData.error === "Product variant not found") {
+          toast.error("Your cart contains outdated items from a previous session. We've cleared it. Please add the products again.");
+          clearCart();
+          setIsSubmitting(false);
+          router.push("/shop");
+          return;
+        }
+        throw new Error(errorData.error || "Failed to sync checkout bag with server");
       }
 
       const cartData = await cartRes.json();
@@ -138,7 +152,7 @@ export default function CheckoutPage() {
         throw new Error(orderData.error || "Failed to initiate transaction");
       }
 
-      const { orderId, razorpayOrderId, razorpayKeyId } = orderData;
+      const { orderId, razorpayOrderId, razorpayKeyId, amount } = orderData;
 
       // 3. DEFINE PAYMENT SUCCESS REDIRECT LOGIC
       const handleSuccessfulPayment = () => {
@@ -152,35 +166,34 @@ export default function CheckoutPage() {
       if ((window as any).Razorpay && razorpayKeyId && !razorpayKeyId.includes("yourKeyId")) {
         const options = {
           key: razorpayKeyId,
-          amount: Math.round((total + shipping) * 100),
-          currency: "USD",
+          amount: amount, // amount in paise from backend
+          currency: "INR",
           name: "Ecilak",
           description: "Premium Beauty & Cosmetics Purchase",
           order_id: razorpayOrderId,
-          handler: async function () {
-            // Under normal circumstances, webhook handles DB status updates.
-            // We'll also invoke a status call or webhook sync directly so local development confirmation loads instantly
+          handler: async function (response: any) {
             try {
-              await fetch("/api/webhooks/razorpay", {
+              const verifyRes = await fetch("/api/verify-payment", {
                 method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
+                headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
-                  event: "order.paid",
-                  payload: {
-                    payment: {
-                      entity: {
-                        receipt: orderId,
-                      },
-                    },
-                  },
+                  razorpay_order_id: response.razorpay_order_id,
+                  razorpay_payment_id: response.razorpay_payment_id,
+                  razorpay_signature: response.razorpay_signature,
+                  receipt: orderId,
                 }),
               });
-            } catch (err) {
-              console.error("Direct webhook trigger failed:", err);
+
+              if (!verifyRes.ok) {
+                const errorData = await verifyRes.json();
+                throw new Error(errorData.error || "Payment verification failed");
+              }
+
+              handleSuccessfulPayment();
+            } catch (err: any) {
+              console.error("Verification failed:", err);
+              toast.error(err.message || "Payment verification failed. Please contact support.");
             }
-            handleSuccessfulPayment();
           },
           prefill: {
             name: `${formData.firstName} ${formData.lastName}`,
@@ -190,36 +203,22 @@ export default function CheckoutPage() {
           theme: {
             color: "#C4705A", // terracotta theme accent color
           },
+          modal: {
+            ondismiss: function () {
+              toast.info("Payment cancelled by user");
+            }
+          }
         };
+        
         const rzp = new (window as any).Razorpay(options);
+        
+        rzp.on("payment.failed", function (response: any) {
+          toast.error(`Payment failed: ${response.error.description}`);
+        });
+        
         rzp.open();
       } else {
-        // Fallback for simulation/testing when API keys are not set up yet
-        toast.warning("Razorpay credentials missing. Triggering checkout simulation...");
-        
-        setTimeout(async () => {
-          try {
-            // Trigger simulated webhook execution so DB order is marked PAID, stock is reduced, and confirmation mail is dispatched
-            await fetch("/api/webhooks/razorpay", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({
-                event: "order.paid",
-                payload: {
-                  payment: {
-                    entity: {
-                      receipt: orderId,
-                    },
-                  },
-                },
-              }),
-            });
-            handleSuccessfulPayment();
-          } catch (err) {
-            console.error("Simulation trigger error:", err);
-            toast.error("Failed to complete simulated payment.");
-          }
-        }, 1500);
+        toast.error("Razorpay SDK not loaded or configured. Please check your internet connection and API keys.");
       }
     } catch (err: any) {
       console.error(err);

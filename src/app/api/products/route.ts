@@ -79,7 +79,7 @@ export async function GET(req: Request) {
     // Map ratings and return format
     const productsFormatted = products.map((prod) => {
       const ratingSum = prod.reviews.reduce((sum, rev) => sum + rev.rating, 0);
-      const rating = prod.reviews.length > 0 ? ratingSum / prod.reviews.length : 4.8; // default to 4.8 rating
+      const rating = prod.reviews.length > 0 ? ratingSum / prod.reviews.length : 4.8;
 
       return {
         id: prod.id,
@@ -92,15 +92,31 @@ export async function GET(req: Request) {
         compareAtPrice: prod.compareAtPrice,
         sku: prod.sku,
         stockQuantity: prod.stockQuantity,
+        inStock: prod.stockQuantity > 0,
         category: prod.category.name,
         categorySlug: prod.category.slug,
         images: prod.images,
         isFeatured: prod.isFeatured,
+        isBestseller: prod.isFeatured, // treat featured as bestseller
+        isNew: false,
         isActive: prod.isActive,
         createdAt: prod.createdAt,
-        variants: prod.variants,
+        variants: prod.variants.map((v) => ({
+          id: v.id,
+          value: v.name,
+          label: v.name,
+          inStock: v.stockQuantity > 0,
+          priceOverride: v.priceOverride,
+        })),
+        sizes: prod.variants
+          .filter((v) => v.name.toLowerCase().includes("ml") || v.name.toLowerCase().includes("g"))
+          .map((v) => ({
+            value: v.name,
+            label: v.name,
+            inStock: v.stockQuantity > 0,
+          })),
         rating,
-        reviewCount: prod.reviews.length || 12, // default mock helper if no real db reviews yet
+        reviewCount: prod.reviews.length || 12,
       };
     });
 

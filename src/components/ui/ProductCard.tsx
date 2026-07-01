@@ -25,13 +25,21 @@ export function ProductCard({ product, className }: ProductCardProps) {
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // Support both DB (.variants) and mock (.sizes) data structures
+    const isDbProduct = "variants" in product;
+    const variants = isDbProduct ? ((product as Product & { variants: { id: string; name: string }[] }).variants) : [];
+    const variantId = isDbProduct && variants.length > 0 ? variants[0].id : undefined;
+    const sizeLabel = product.sizes?.[0]?.value || (isDbProduct && variants[0]?.name) || "default";
+
     addItem({
       id: product.id,
+      variantId: variantId,
       slug: product.slug,
       name: product.name,
       price: product.price,
       image: product.images[0],
-      size: product.sizes[0]?.value || "default",
+      size: sizeLabel,
     });
     toast.success(`${product.name} added to cart`);
     openCart();

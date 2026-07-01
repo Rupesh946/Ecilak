@@ -133,6 +133,11 @@ export async function POST(req: Request) {
 
     const shipping = subtotal >= 50 ? 0 : 5.99;
     const total = Math.max(0, subtotal - discount + shipping);
+    const amountInPaise = Math.round(total * 100);
+
+    if (amountInPaise < 100) {
+      return NextResponse.json({ error: "Minimum order amount is 100 paise" }, { status: 400 });
+    }
 
     const shippingAddressSnapshot = {
       firstName,
@@ -165,21 +170,19 @@ export async function POST(req: Request) {
     let razorpayOrder;
     try {
       razorpayOrder = await razorpay.orders.create({
-        amount: Math.round(total * 100), // in paise (e.g. $50.00 -> 5000 cents/paise)
-        currency: "USD",
+        amount: amountInPaise,
+        currency: "INR",
         receipt: order.id,
       });
     } catch (rzpErr) {
-      console.error("Razorpay Order creation failed, falling back to local simulation:", rzpErr);
-      // Fallback for simulation if credentials are not configured/invalid
-      razorpayOrder = {
-        id: `rzp_test_sim_${crypto.randomUUID().substring(0, 14)}`,
-        amount: Math.round(total * 100),
-        currency: "USD",
-      };
+      console.error("Razorpay Order creation failed:", rzpErr);
+      return NextResponse.json({ error: "Razorpay order creation failed" }, { status: 500 });
     }
 
     return NextResponse.json({
+      order_id: razorpayOrder.id,
+      amount: razorpayOrder.amount,
+      currency: razorpayOrder.currency,
       orderId: order.id,
       total,
       razorpayOrderId: razorpayOrder.id,

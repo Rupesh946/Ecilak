@@ -178,7 +178,7 @@ export default function CartPage() {
                 </div>
                 {shippingEstimate > 0 && (
                   <p className="text-xs text-warm-gray-400">
-                    Free shipping on orders over $50
+                    Free shipping on orders over ₹50
                   </p>
                 )}
               </div>
