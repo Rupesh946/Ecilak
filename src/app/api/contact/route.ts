@@ -29,8 +29,8 @@ export async function POST(req: Request) {
     // Send contact notification email via Resend
     try {
       await resend.emails.send({
-        from: "Ecilak Contact <support@ecilak.com>",
-        to: "support@ecilak.com", // business recipient
+        from: "Ecilak Contact <ecilakbusiness@gmail.com>",
+        to: "ecilakbusiness@gmail.com", // business recipient
         subject: `New Contact Submission: ${sanitizedSubject}`,
         html: `
           <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #FAF7F2; border-radius: 12px;">

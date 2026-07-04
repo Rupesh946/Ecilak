@@ -180,11 +180,11 @@ export function Footer() {
               ))}
             </div>
             <a
-              href="mailto:hello@ecilak.com"
+              href="mailto:ecilakbusiness@gmail.com"
               className="flex items-center gap-2 text-sm text-warm-gray-400 hover:text-terracotta-300 transition-colors"
             >
               <Mail className="w-4 h-4" />
-              hello@ecilak.com
+              ecilakbusiness@gmail.com
             </a>
           </div>
         </div>

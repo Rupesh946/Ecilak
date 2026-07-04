@@ -1,4 +1,5 @@
 import type { Config } from "tailwindcss";
+import plugin from "tailwindcss/plugin";
 
 const config: Config = {
   content: [
@@ -88,6 +89,8 @@ const config: Config = {
         "slide-in-right": "slideInRight 0.3s ease-out",
         "scale-in": "scaleIn 0.2s ease-out",
         "ken-burns": "kenBurns 20s ease-in-out infinite alternate",
+        "accordion-down": "accordionDown 0.2s ease-out",
+        "accordion-up": "accordionUp 0.15s ease-out",
       },
       keyframes: {
         fadeIn: {
@@ -110,9 +113,44 @@ const config: Config = {
           "0%": { transform: "scale(1) translate(0, 0)" },
           "100%": { transform: "scale(1.08) translate(-1%, -1%)" },
         },
+        accordionDown: {
+          from: { height: "0", opacity: "0" },
+          to: { height: "var(--accordion-panel-height)", opacity: "1" },
+        },
+        accordionUp: {
+          from: { height: "var(--accordion-panel-height)", opacity: "1" },
+          to: { height: "0", opacity: "0" },
+        },
       },
     },
   },
-  plugins: [],
+  plugins: [
+    // Bridge plugin: registers Tailwind v4 data-attribute shorthand variants for v3
+    plugin(function ({ addVariant, matchVariant }) {
+      // Simple boolean data-attribute variants (data-open: → &[data-open])
+      const booleanAttrs = [
+        "horizontal", "vertical", "open", "closed", "active",
+        "disabled", "placeholder", "inset", "popup-open", "checked",
+        "ending-style", "starting-style",
+      ];
+      for (const attr of booleanAttrs) {
+        addVariant(`data-${attr}`, `&[data-${attr}]`);
+        // group-data-* variants
+        addVariant(`group-data-${attr}`, `:merge(.group)[data-${attr}] &`);
+      }
+
+      // group-data-horizontal/tabs and similar named-group patterns
+      addVariant("group-data-horizontal/tabs", `:merge(.group\\/tabs)[data-horizontal] &`);
+      addVariant("group-data-vertical/tabs", `:merge(.group\\/tabs)[data-vertical] &`);
+      addVariant("group-data-horizontal/tabs-list", `:merge(.group\\/tabs-list)[data-horizontal] &`);
+      addVariant("group-data-vertical/tabs-list", `:merge(.group\\/tabs-list)[data-vertical] &`);
+
+      // not-last: variant (v4 shorthand for last:hidden or &:not(:last-child))
+      addVariant("not-last", "&:not(:last-child)");
+    }),
+    // tw-animate-css compatibility
+    require("tailwindcss-animate"),
+  ],
 };
 export default config;
+

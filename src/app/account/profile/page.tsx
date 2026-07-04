@@ -12,7 +12,7 @@ export default function ProfilePage() {
     firstName: "Jane",
     lastName: "Doe",
     email: "jane@example.com",
-    phone: "+1 (555) 123-4567",
+    phone: "",
   });
 
   const handleSave = (e: React.FormEvent) => {

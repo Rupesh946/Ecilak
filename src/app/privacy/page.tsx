@@ -36,12 +36,12 @@ export default function PrivacyPage() {
 
           <section>
             <h2 className="font-serif text-xl text-warm-gray-900 mb-3">5. Your Rights</h2>
-            <p>You have the right to access, correct, or delete your personal information. You may also opt out of marketing communications at any time. To exercise these rights, please contact us at privacy@ecilak.com.</p>
+            <p>You have the right to access, correct, or delete your personal information. You may also opt out of marketing communications at any time. To exercise these rights, please contact us at ecilakbusiness@gmail.com.</p>
           </section>
 
           <section>
             <h2 className="font-serif text-xl text-warm-gray-900 mb-3">6. Contact Us</h2>
-            <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:privacy@ecilak.com" className="text-terracotta-400 hover:underline">privacy@ecilak.com</a> or write to us at 123 Beauty Lane, Los Angeles, CA 90001.</p>
+            <p>If you have questions about this Privacy Policy, please contact us at <a href="mailto:ecilakbusiness@gmail.com" className="text-terracotta-400 hover:underline">ecilakbusiness@gmail.com</a> or write to us at 123 Beauty Lane, Los Angeles, CA 90001.</p>
           </section>
         </div>
       </div>

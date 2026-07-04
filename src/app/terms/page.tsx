@@ -45,7 +45,7 @@ export default function TermsPage() {
 
           <section>
             <h2 className="font-serif text-xl text-warm-gray-900 mb-3">7. Contact</h2>
-            <p>For questions about these Terms of Service, contact us at <a href="mailto:legal@ecilak.com" className="text-terracotta-400 hover:underline">legal@ecilak.com</a>.</p>
+            <p>For questions about these Terms of Service, contact us at <a href="mailto:ecilakbusiness@gmail.com" className="text-terracotta-400 hover:underline">ecilakbusiness@gmail.com</a>.</p>
           </section>
         </div>
       </div>

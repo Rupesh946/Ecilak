@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Mail, Phone, MapPin, Send } from "lucide-react";
+import { Mail, ShieldCheck, MapPin, Send } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -46,21 +46,21 @@ export default function ContactPage() {
                 </div>
                 <div>
                   <p className="font-sans font-medium text-warm-gray-900 text-sm">Email</p>
-                  <a href="mailto:hello@ecilak.com" className="text-sm text-warm-gray-500 hover:text-terracotta-400 transition-colors font-sans">
-                    hello@ecilak.com
+                  <a href="mailto:ecilakbusiness@gmail.com" className="text-sm text-warm-gray-500 hover:text-terracotta-400 transition-colors font-sans">
+                    ecilakbusiness@gmail.com
                   </a>
                 </div>
               </div>
 
               <div className="flex items-start gap-4 mb-6">
                 <div className="w-10 h-10 rounded-xl bg-terracotta-50 text-terracotta-400 flex items-center justify-center shrink-0">
-                  <Phone className="w-5 h-5" />
+                  <ShieldCheck className="w-5 h-5" />
                 </div>
                 <div>
-                  <p className="font-sans font-medium text-warm-gray-900 text-sm">Phone</p>
-                  <a href="tel:+15551234567" className="text-sm text-warm-gray-500 hover:text-terracotta-400 transition-colors font-sans">
-                    +1 (555) 123-4567
-                  </a>
+                  <p className="font-sans font-medium text-warm-gray-900 text-sm">Satisfaction Guarantee</p>
+                  <p className="text-sm text-warm-gray-500 font-sans">
+                    1-week hassle-free returns on all products
+                  </p>
                 </div>
               </div>
 

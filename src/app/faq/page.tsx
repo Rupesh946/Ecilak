@@ -30,7 +30,7 @@ const faqs = [
   {
     category: "Returns & Refunds",
     questions: [
-      { q: "What is your return policy?", a: "We offer a 30-day return policy on unopened and unused products. If you're not satisfied, please contact us at hello@ecilak.com to initiate a return." },
+      { q: "What is your return policy?", a: "We offer a 7-day satisfaction guarantee on unopened and unused products. If you're not satisfied, please contact us at ecilakbusiness@gmail.com to initiate a return." },
       { q: "How long do refunds take?", a: "Once we receive your return, refunds are processed within 5-7 business days and will appear on your original payment method." },
       { q: "Can I exchange a product?", a: "Yes, we're happy to help with exchanges. Contact our team and we'll arrange a swap for you." },
     ],

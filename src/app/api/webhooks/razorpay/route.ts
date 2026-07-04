@@ -105,7 +105,7 @@ export async function POST(req: Request) {
       if (recipientEmail) {
         try {
           await resend.emails.send({
-            from: "Ecilak Orders <orders@ecilak.com>",
+            from: "Ecilak Orders <ecilakbusiness@gmail.com>",
             to: recipientEmail,
             subject: `Thank you for your order! - #${order.id.substring(0, 8).toUpperCase()}`,
             html: `

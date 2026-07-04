@@ -2,7 +2,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Leaf, Sparkles, Recycle, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ArrowRight, Leaf, Sparkles, Recycle, ShieldCheck, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -254,6 +254,12 @@ function BrandStorySection() {
       description:
         "Refillable packaging, carbon-neutral shipping, and partnerships with reforestation projects. Beauty that gives back.",
     },
+    {
+      icon: ShieldCheck,
+      title: "7-Day Returns",
+      description:
+        "Not satisfied? Return any unopened product within 7 days for a full refund — no questions asked. Your satisfaction is our promise.",
+    },
   ];
 
   return (
@@ -264,7 +270,7 @@ function BrandStorySection() {
           subtitle="Beauty with purpose. Every choice we make is intentional — from the ingredients we source to the packaging we use."
         />
 
-        <div className="grid md:grid-cols-3 gap-8 md:gap-12">
+        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
           {values.map((value) => (
             <div key={value.title} className="text-center group">
               <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-terracotta-50 text-terracotta-400 mb-6 group-hover:bg-terracotta-100 transition-colors duration-300">

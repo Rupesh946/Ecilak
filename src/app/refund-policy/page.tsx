@@ -14,13 +14,13 @@ export default function RefundPolicyPage() {
 
         <div className="space-y-8 text-warm-gray-600 font-sans text-sm leading-relaxed">
           <section>
-            <h2 className="font-serif text-xl text-warm-gray-900 mb-3">30-Day Satisfaction Guarantee</h2>
-            <p>At Ecilak, your satisfaction is our priority. If you are not completely happy with your purchase, you may return it within 30 days of delivery for a full refund. Products must be unused, unopened, and in their original packaging.</p>
+            <h2 className="font-serif text-xl text-warm-gray-900 mb-3">7-Day Satisfaction Guarantee</h2>
+            <p>At Ecilak, your satisfaction is our priority. If you are not completely happy with your purchase, you may return it within 7 days of delivery for a full refund. Products must be unused, unopened, and in their original packaging.</p>
           </section>
 
           <section>
             <h2 className="font-serif text-xl text-warm-gray-900 mb-3">How to Initiate a Return</h2>
-            <p>To start a return, please contact our support team at <a href="mailto:returns@ecilak.com" className="text-terracotta-400 hover:underline">returns@ecilak.com</a> with your order number. We&apos;ll provide you with a prepaid return label and instructions.</p>
+            <p>To start a return, please contact our support team at <a href="mailto:ecilakbusiness@gmail.com" className="text-terracotta-400 hover:underline">ecilakbusiness@gmail.com</a> with your order number. We&apos;ll provide you with a return label and instructions.</p>
           </section>
 
           <section>
@@ -45,7 +45,7 @@ export default function RefundPolicyPage() {
 
           <section>
             <h2 className="font-serif text-xl text-warm-gray-900 mb-3">Questions?</h2>
-            <p>Contact us at <a href="mailto:returns@ecilak.com" className="text-terracotta-400 hover:underline">returns@ecilak.com</a> or call +1 (555) 123-4567. We&apos;re here to help.</p>
+            <p>Contact us at <a href="mailto:ecilakbusiness@gmail.com" className="text-terracotta-400 hover:underline">ecilakbusiness@gmail.com</a>. We&apos;re here to help.</p>
           </section>
         </div>
       </div>
