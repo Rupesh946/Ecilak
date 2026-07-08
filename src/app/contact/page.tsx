@@ -71,8 +71,8 @@ export default function ContactPage() {
                 <div>
                   <p className="font-sans font-medium text-warm-gray-900 text-sm">Address</p>
                   <p className="text-sm text-warm-gray-500 font-sans">
-                    123 Beauty Lane<br />
-                    Los Angeles, CA 90001
+                    Laxman chotra<br />
+                    Hansi
                   </p>
                 </div>
               </div>
