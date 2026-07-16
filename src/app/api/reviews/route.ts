@@ -29,13 +29,33 @@ export async function POST(req: Request) {
     const { productId, rating, comment } = result.data;
     const sanitizedComment = sanitizeHtml(comment);
 
-    // Check if product exists
+    // Check if product exists and get its variants
     const product = await prisma.product.findUnique({
       where: { id: productId },
+      include: { variants: true }
     });
 
     if (!product) {
       return NextResponse.json({ error: "Product not found" }, { status: 404 });
+    }
+
+    // Purchase Verification
+    const variantIds = product.variants.map(v => v.id);
+    const pastOrder = await prisma.order.findFirst({
+      where: {
+        userId: session.user.id,
+        items: {
+          some: {
+            variantId: {
+              in: variantIds
+            }
+          }
+        }
+      }
+    });
+
+    if (!pastOrder) {
+      return NextResponse.json({ error: "You can only review products you have purchased." }, { status: 403 });
     }
 
     // Check if user already reviewed
@@ -66,3 +86,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "Failed to submit review" }, { status: 500 });
   }
 }
+

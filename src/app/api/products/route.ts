@@ -21,112 +21,29 @@ const productSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
+import { getProducts, GetProductsOptions } from "@/lib/services/products";
+
 export async function GET(req: Request) {
   try {
     const { searchParams } = new URL(req.url);
 
     const query = searchParams.get("query") || undefined;
-    const categorySlug = searchParams.get("category") || undefined;
+    const category = searchParams.get("category") || undefined;
     const minPrice = searchParams.get("minPrice") ? parseFloat(searchParams.get("minPrice")!) : undefined;
     const maxPrice = searchParams.get("maxPrice") ? parseFloat(searchParams.get("maxPrice")!) : undefined;
     const page = searchParams.get("page") ? parseInt(searchParams.get("page")!) : 1;
     const limit = searchParams.get("limit") ? parseInt(searchParams.get("limit")!) : 20;
 
-    const skip = (page - 1) * limit;
-
-    // Build Prisma query filters
-    const where: any = {
-      isActive: true,
-    };
-
-    if (query) {
-      where.OR = [
-        { name: { contains: query, mode: "insensitive" } },
-        { description: { contains: query, mode: "insensitive" } },
-      ];
-    }
-
-    if (categorySlug) {
-      where.category = {
-        slug: categorySlug,
-      };
-    }
-
-    if (minPrice !== undefined || maxPrice !== undefined) {
-      where.price = {};
-      if (minPrice !== undefined) where.price.gte = minPrice;
-      if (maxPrice !== undefined) where.price.lte = maxPrice;
-    }
-
-    const [products, totalCount] = await Promise.all([
-      prisma.product.findMany({
-        where,
-        include: {
-          category: { select: { name: true, slug: true } },
-          variants: true,
-          reviews: {
-            where: { isApproved: true },
-            select: { rating: true },
-          },
-        },
-        skip,
-        take: limit,
-        orderBy: { createdAt: "desc" },
-      }),
-      prisma.product.count({ where }),
-    ]);
-
-    // Map ratings and return format
-    const productsFormatted = products.map((prod) => {
-      const ratingSum = prod.reviews.reduce((sum, rev) => sum + rev.rating, 0);
-      const rating = prod.reviews.length > 0 ? ratingSum / prod.reviews.length : 4.8;
-
-      return {
-        id: prod.id,
-        name: prod.name,
-        slug: prod.slug,
-        description: prod.description,
-        ingredients: prod.ingredients,
-        howToUse: prod.howToUse,
-        price: prod.price,
-        compareAtPrice: prod.compareAtPrice,
-        sku: prod.sku,
-        stockQuantity: prod.stockQuantity,
-        inStock: prod.stockQuantity > 0,
-        category: prod.category.name,
-        categorySlug: prod.category.slug,
-        images: prod.images,
-        isFeatured: prod.isFeatured,
-        isBestseller: prod.isFeatured, // treat featured as bestseller
-        isNew: false,
-        isActive: prod.isActive,
-        createdAt: prod.createdAt,
-        variants: prod.variants.map((v) => ({
-          id: v.id,
-          value: v.name,
-          label: v.name,
-          inStock: v.stockQuantity > 0,
-          priceOverride: v.priceOverride,
-        })),
-        sizes: prod.variants
-          .filter((v) => v.name.toLowerCase().includes("ml") || v.name.toLowerCase().includes("g"))
-          .map((v) => ({
-            value: v.name,
-            label: v.name,
-            inStock: v.stockQuantity > 0,
-          })),
-        rating,
-        reviewCount: prod.reviews.length || 12,
-      };
-    });
-
-    return NextResponse.json({
-      products: productsFormatted,
-      totalCount,
+    const result = await getProducts({
+      query,
+      category,
+      minPrice,
+      maxPrice,
       page,
       limit,
-      totalPages: Math.ceil(totalCount / limit),
     });
+
+    return NextResponse.json(result);
   } catch (error) {
     console.error("Products GET error:", error);
     return NextResponse.json({ error: "Failed to fetch products" }, { status: 500 });

@@ -2,6 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { notFound } from "next/navigation";
+import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -60,17 +61,22 @@ export default function CategoryPage({
     <div className="pt-24 pb-16">
       <div className="container-wide">
         {/* Hero Banner */}
-        <div className="relative rounded-2xl overflow-hidden mb-12 bg-gradient-to-br from-terracotta-50 via-cream-200 to-terracotta-100 py-16 md:py-24 px-8 md:px-16 text-center">
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-serif text-[12rem] md:text-[18rem] text-white/20 select-none leading-none">
-              {category.name.charAt(0)}
-            </span>
-          </div>
+        <div className="relative rounded-2xl overflow-hidden mb-12 min-h-[300px] md:min-h-[400px] flex flex-col items-center justify-center text-center px-8 md:px-16">
+          <Image
+            src={category.image}
+            alt={`${category.name} category - ${category.description}`}
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover object-center"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-warm-gray-900/60 via-warm-gray-900/40 to-warm-gray-900/70" />
+          
           <div className="relative z-10">
-            <h1 className="font-serif text-4xl md:text-5xl text-warm-gray-900 mb-3">
+            <h1 className="font-serif text-4xl md:text-5xl text-white mb-3 drop-shadow-sm">
               {category.name}
             </h1>
-            <p className="text-warm-gray-600 font-sans max-w-lg mx-auto">
+            <p className="text-cream-100 font-sans max-w-lg mx-auto drop-shadow-sm">
               {category.description}
             </p>
           </div>

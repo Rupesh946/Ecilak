@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { cn } from "@/lib/utils";
 import type { Category } from "@/data/categories";
 
@@ -17,27 +18,17 @@ export function CategoryCard({ category, className }: CategoryCardProps) {
       )}
       aria-label={`Shop ${category.name}`}
     >
-      {/* Background gradient placeholder */}
-      <div
-        className={cn(
-          "absolute inset-0 transition-transform duration-700 ease-out group-hover:scale-105",
-          category.slug === "skincare" && "bg-gradient-to-br from-terracotta-50 via-cream-200 to-terracotta-100",
-          category.slug === "makeup" && "bg-gradient-to-br from-terracotta-100 via-terracotta-50 to-cream-300",
-          category.slug === "bath-body" && "bg-gradient-to-br from-cream-300 via-terracotta-50 to-cream-200",
-          category.slug === "gifts" && "bg-gradient-to-br from-terracotta-50 via-cream-100 to-terracotta-100"
-        )}
-        role="img"
-        aria-label={`${category.name} category`}
-      >
-        <div className="absolute inset-0 flex items-center justify-center">
-          <span className="font-serif text-8xl text-white/30 select-none">
-            {category.name.charAt(0)}
-          </span>
-        </div>
-      </div>
+      {/* Background image */}
+      <Image
+        src={category.image}
+        alt={`${category.name} category`}
+        fill
+        sizes="(max-width: 640px) 50vw, (max-width: 1024px) 25vw, 25vw"
+        className="object-cover transition-transform duration-700 ease-out group-hover:scale-110 image-fade-in"
+      />
 
       {/* Dark overlay gradient */}
-      <div className="absolute inset-0 bg-gradient-to-t from-warm-gray-900/60 via-transparent to-transparent" />
+      <div className="absolute inset-0 bg-gradient-to-t from-warm-gray-900/70 via-warm-gray-900/20 to-transparent transition-all duration-500 group-hover:from-warm-gray-900/80" />
 
       {/* Text */}
       <div className="absolute bottom-0 left-0 right-0 p-6">

@@ -2,6 +2,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ArrowRight, Leaf, Sparkles, Recycle, ShieldCheck, ChevronLeft, ChevronRight, Quote } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -46,6 +47,7 @@ export default function HomePage() {
       <HeroSection />
       <CategorySection />
       <FeaturedSection featuredProducts={featuredProducts} />
+      <ProductShowcaseSection />
       <BrandStorySection />
       <TestimonialsSection />
       <InstagramSection />
@@ -58,26 +60,34 @@ export default function HomePage() {
 function HeroSection() {
   return (
     <section className="relative min-h-screen flex" aria-label="Hero">
-      {/* Left — Image */}
+      {/* Left — Hero Image */}
       <div className="hidden lg:block lg:w-1/2 relative overflow-hidden">
-        <div className="absolute inset-0 animate-ken-burns bg-gradient-to-br from-terracotta-200 via-terracotta-100 to-cream-300">
-          {/* Decorative shapes */}
-          <div className="absolute top-1/4 left-1/4 w-64 h-64 rounded-full bg-terracotta-300/20 blur-3xl" />
-          <div className="absolute bottom-1/3 right-1/4 w-48 h-48 rounded-full bg-cream-100/30 blur-2xl" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <span className="font-serif text-[16rem] text-white/20 select-none leading-none">
-              E
-            </span>
-          </div>
-        </div>
-        {/* Overlay gradient */}
-        <div className="absolute inset-0 bg-gradient-to-r from-transparent to-cream-100/20" />
+        <Image
+          src="/images/hero-banner.png"
+          alt="Ecilak beauty products — skincare, nails, and self-care essentials"
+          fill
+          priority
+          sizes="50vw"
+          className="object-cover animate-ken-burns"
+        />
+        {/* Soft overlay for depth */}
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-cream-100/30" />
       </div>
 
       {/* Right — Content */}
       <div className="w-full lg:w-1/2 relative flex items-center">
-        {/* Mobile background */}
-        <div className="absolute inset-0 lg:hidden bg-gradient-to-br from-terracotta-100 via-cream-100 to-cream-200" />
+        {/* Mobile background — use the hero image */}
+        <div className="absolute inset-0 lg:hidden">
+          <Image
+            src="/images/hero-banner.png"
+            alt=""
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-warm-gray-900/60 via-warm-gray-900/40 to-warm-gray-900/70" />
+        </div>
 
         {/* Decorative watermark letter */}
         <div className="watermark-letter hidden lg:block" aria-hidden="true">
@@ -85,18 +95,18 @@ function HeroSection() {
         </div>
 
         <div className="relative z-10 px-8 md:px-16 lg:px-20 py-32 lg:py-0 max-w-xl">
-          <span className="inline-block text-xs tracking-[0.3em] uppercase text-terracotta-400 font-sans font-medium mb-6 animate-fade-in">
+          <span className="inline-block text-xs tracking-[0.3em] uppercase text-terracotta-400 lg:text-terracotta-400 text-terracotta-200 font-sans font-medium mb-6 animate-fade-in">
             New Collection 2026
           </span>
 
-          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl text-warm-gray-900 leading-[1.05] mb-6 animate-fade-in-up">
+          <h1 className="font-serif text-5xl md:text-6xl lg:text-7xl lg:text-warm-gray-900 text-white leading-[1.05] mb-6 animate-fade-in-up">
             Beauty,{" "}
-            <span className="italic text-terracotta-400">
+            <span className="italic text-terracotta-400 lg:text-terracotta-400 text-terracotta-300">
               redefined.
             </span>
           </h1>
 
-          <p className="text-warm-gray-600 text-lg md:text-xl font-sans leading-relaxed mb-10 max-w-md animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+          <p className="lg:text-warm-gray-600 text-cream-200 text-lg md:text-xl font-sans leading-relaxed mb-10 max-w-md animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
             Clean formulas, luxurious textures, and considered design. 
             Discover skincare and colour that feels as beautiful as it looks.
           </p>
@@ -116,7 +126,7 @@ function HeroSection() {
               href="/about"
               className={cn(
                 buttonVariants({ variant: "outline", size: "lg" }),
-                "border-warm-gray-300 text-warm-gray-700 hover:border-terracotta-400 hover:text-terracotta-400 font-sans text-sm tracking-wide px-8 py-6 rounded-full flex items-center justify-center"
+                "border-warm-gray-300 lg:text-warm-gray-700 text-white lg:border-warm-gray-300 border-white/40 hover:border-terracotta-400 hover:text-terracotta-400 font-sans text-sm tracking-wide px-8 py-6 rounded-full flex items-center justify-center"
               )}
             >
               Our Story
@@ -137,7 +147,7 @@ function CategorySection() {
           title="Shop by Category"
           subtitle="Explore our curated collections, each crafted with the same commitment to clean beauty and luxurious experience."
         />
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6">
           {categories.map((category) => (
             <CategoryCard key={category.slug} category={category} />
           ))}
@@ -233,6 +243,52 @@ function FeaturedSection({ featuredProducts }: { featuredProducts: any[] }) {
   );
 }
 
+/* ─── PRODUCT SHOWCASE VISUAL BREAK ────────────────────────────────── */
+function ProductShowcaseSection() {
+  const showcaseImages = [
+    { src: "/images/products/Product6(FaceWash) (3).jpeg", alt: "Glow Revival Face Wash", span: "col-span-2 row-span-2" },
+    { src: "/images/products/Product3(Nail Extension) (2).jpeg", alt: "Luxe Nail Extensions", span: "" },
+    { src: "/images/products/Product8(UnderEyeMask) (2).jpeg", alt: "Hydra Glow Under Eye Masks", span: "" },
+    { src: "/images/products/Product4(Dtan) (2).jpeg", alt: "Radiance D-Tan Pack", span: "" },
+    { src: "/images/products/Prouduct9(FaceDetox) (1).jpeg", alt: "Charcoal Face Detox Mask", span: "" },
+  ];
+
+  return (
+    <section className="py-16 md:py-24 bg-cream-100" aria-label="Product showcase">
+      <div className="container-wide">
+        <SectionHeading
+          title="The Ecilak Edit"
+          subtitle="Curated picks from our collection — because your skin deserves the best."
+        />
+
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[200px] md:auto-rows-[250px]">
+          {showcaseImages.map((img, i) => (
+            <div
+              key={i}
+              className={cn(
+                "relative rounded-2xl overflow-hidden group cursor-pointer",
+                img.span
+              )}
+            >
+              <Image
+                src={img.src}
+                alt={img.alt}
+                fill
+                sizes="(max-width: 768px) 50vw, 25vw"
+                className="object-cover transition-transform duration-700 ease-out group-hover:scale-110 image-fade-in"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-warm-gray-900/50 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <div className="absolute bottom-4 left-4 right-4 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                <p className="text-white font-serif text-lg drop-shadow-lg">{img.alt}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
+
 /* ─── BRAND STORY / VALUE PROPS ─────────────────────────────────────── */
 function BrandStorySection() {
   const values = [
@@ -263,7 +319,7 @@ function BrandStorySection() {
   ];
 
   return (
-    <section className="section-padding bg-cream-100" aria-label="Our values">
+    <section className="section-padding bg-cream-50" aria-label="Our values">
       <div className="container-wide">
         <SectionHeading
           title="Why Ecilak"
@@ -273,7 +329,7 @@ function BrandStorySection() {
         <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12">
           {values.map((value) => (
             <div key={value.title} className="text-center group">
-              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-terracotta-50 text-terracotta-400 mb-6 group-hover:bg-terracotta-100 transition-colors duration-300">
+              <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-terracotta-50 text-terracotta-400 mb-6 group-hover:bg-terracotta-100 group-hover:scale-110 transition-all duration-300">
                 <value.icon className="w-7 h-7" />
               </div>
               <h3 className="font-serif text-xl text-warm-gray-900 mb-3">
@@ -294,6 +350,13 @@ function BrandStorySection() {
 function TestimonialsSection() {
   const [current, setCurrent] = useState(0);
 
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % testimonials.length);
+    }, 6000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section className="section-padding bg-warm-gray-900 text-cream-100" aria-label="Customer testimonials">
       <div className="container-wide max-w-4xl">
@@ -306,7 +369,7 @@ function TestimonialsSection() {
           <Quote className="w-10 h-10 text-terracotta-400/30 mb-6 mx-auto" />
 
           <blockquote className="text-center">
-            <p className="font-serif text-xl md:text-2xl text-cream-100 leading-relaxed mb-6 italic">
+            <p className="font-serif text-xl md:text-2xl text-cream-100 leading-relaxed mb-6 italic transition-opacity duration-500">
               &ldquo;{testimonials[current].body}&rdquo;
             </p>
             <footer className="flex flex-col items-center gap-2">
@@ -347,13 +410,13 @@ function TestimonialsSection() {
 
 /* ─── INSTAGRAM GALLERY ─────────────────────────────────────────────── */
 function InstagramSection() {
-  const placeholders = [
-    "from-terracotta-100 to-cream-200",
-    "from-cream-300 to-terracotta-50",
-    "from-terracotta-50 to-cream-300",
-    "from-cream-200 to-terracotta-100",
-    "from-terracotta-200 to-cream-100",
-    "from-cream-100 to-terracotta-200",
+  const instagramImages = [
+    { src: "/images/lifestyle-1.png", alt: "Beauty ritual — face mask application" },
+    { src: "/images/lifestyle-2.png", alt: "Elegant nail art close-up" },
+    { src: "/images/lifestyle-3.png", alt: "Skincare essentials flat lay" },
+    { src: "/images/lifestyle-4.png", alt: "Self-care with under eye patches" },
+    { src: "/images/lifestyle-5.png", alt: "Glowing skin after skincare routine" },
+    { src: "/images/lifestyle-6.png", alt: "Morning skincare routine" },
   ];
 
   return (
@@ -367,19 +430,22 @@ function InstagramSection() {
         </h2>
       </div>
       <div className="grid grid-cols-3 md:grid-cols-6 gap-1 md:gap-2">
-        {placeholders.map((gradient, i) => (
+        {instagramImages.map((img, i) => (
           <a
             key={i}
             href="#"
             className="group relative aspect-square overflow-hidden"
             aria-label={`Instagram post ${i + 1}`}
           >
-            <div
-              className={`absolute inset-0 bg-gradient-to-br ${gradient} transition-transform duration-500 group-hover:scale-110`}
-            >
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-warm-gray-900/20">
-                <Instagram className="w-6 h-6 text-white" />
-              </div>
+            <Image
+              src={img.src}
+              alt={img.alt}
+              fill
+              sizes="(max-width: 768px) 33vw, 16vw"
+              className="object-cover transition-transform duration-500 group-hover:scale-110 image-fade-in"
+            />
+            <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-warm-gray-900/30">
+              <InstagramIcon className="w-6 h-6 text-white" />
             </div>
           </a>
         ))}
@@ -388,7 +454,7 @@ function InstagramSection() {
   );
 }
 
-function Instagram({ className }: { className?: string }) {
+function InstagramIcon({ className }: { className?: string }) {
   return (
     <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />

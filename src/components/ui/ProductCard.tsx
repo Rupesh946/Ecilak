@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { ShoppingBag, Heart } from "lucide-react";
 import { cn, formatPrice } from "@/lib/utils";
 import { StarRating } from "./StarRating";
@@ -52,6 +53,8 @@ export function ProductCard({ product, className }: ProductCardProps) {
     toast(isWishlisted ? "Removed from wishlist" : "Added to wishlist");
   };
 
+  const hasSecondImage = product.images.length > 1;
+
   return (
     <div className={cn("product-card group relative", className)}>
       <Link
@@ -62,30 +65,27 @@ export function ProductCard({ product, className }: ProductCardProps) {
         {/* Image Container */}
         <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-cream-200 mb-4">
           {/* Primary Image */}
-          <div
-            className="product-card-image product-card-image-primary absolute inset-0 bg-gradient-to-br from-terracotta-100 via-cream-200 to-terracotta-50"
-            role="img"
-            aria-label={`${product.name} product image`}
-          >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-serif text-6xl text-terracotta-200/60 select-none">
-                {product.name.charAt(0)}
-              </span>
-            </div>
-          </div>
+          <Image
+            src={product.images[0]}
+            alt={`${product.name} product image`}
+            fill
+            sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+            className={cn(
+              "object-cover product-card-image product-card-image-primary transition-all duration-500",
+              "image-fade-in"
+            )}
+          />
 
           {/* Secondary Image (shown on hover) */}
-          <div
-            className="product-card-image product-card-image-secondary absolute inset-0 opacity-0 bg-gradient-to-br from-cream-300 via-terracotta-50 to-cream-200"
-            role="img"
-            aria-label={`${product.name} alternate view`}
-          >
-            <div className="absolute inset-0 flex items-center justify-center">
-              <span className="font-serif text-5xl text-terracotta-300/50 italic select-none">
-                {product.name.split(" ").map(w => w[0]).join("")}
-              </span>
-            </div>
-          </div>
+          {hasSecondImage && (
+            <Image
+              src={product.images[1]}
+              alt={`${product.name} alternate view`}
+              fill
+              sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
+              className="object-cover product-card-image product-card-image-secondary opacity-0 transition-all duration-500"
+            />
+          )}
 
           {/* Badges */}
           <div className="absolute top-3 left-3 flex flex-col gap-1.5 z-10">

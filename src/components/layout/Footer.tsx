@@ -39,9 +39,8 @@ const YoutubeIcon = (props: React.SVGProps<SVGSVGElement>) => (
 const shopLinks = [
   { href: "/shop", label: "All Products" },
   { href: "/shop/skincare", label: "Skincare" },
-  { href: "/shop/makeup", label: "Makeup" },
-  { href: "/shop/bath-body", label: "Bath & Body" },
-  { href: "/shop/gifts", label: "Gifts" },
+  { href: "/shop/beauty", label: "Beauty" },
+  { href: "/shop/nails", label: "Nails" },
 ];
 
 const helpLinks = [

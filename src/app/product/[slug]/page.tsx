@@ -12,11 +12,14 @@ import { Separator } from "@/components/ui/separator";
 import { StarRating } from "@/components/ui/StarRating";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProductCard } from "@/components/ui/ProductCard";
+import { ReviewForm } from "@/components/ui/ReviewForm";
 import { useCartStore } from "@/store/cart";
 import { useWishlistStore } from "@/store/wishlist";
 import { useCartDrawerStore } from "@/store/ui";
 import { formatPrice, cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { getProductBySlug, getRelatedProducts } from "@/data/products";
+import { getReviewsByProduct } from "@/data/reviews";
 
 export default function ProductPage({
   params,
@@ -30,30 +33,72 @@ export default function ProductPage({
 
   useEffect(() => {
     const fetchProduct = async () => {
+      let productData: any = null;
+
+      // Try API (database) first
       try {
         const res = await fetch(`/api/products/${slug}`);
-        if (!res.ok) {
-          setProduct(null);
-          setLoading(false);
-          return;
-        }
-        const data = await res.json();
-        setProduct(data);
-
-        // Fetch related products (e.g. from same category)
-        if (data.categorySlug) {
-          const relatedRes = await fetch(`/api/products?category=${data.categorySlug}&limit=4`);
-          if (relatedRes.ok) {
-            const relatedData = await relatedRes.json();
-            // Filter out current product
-            setRelated(relatedData.products.filter((p: any) => p.slug !== slug));
-          }
+        if (res.ok) {
+          productData = await res.json();
         }
       } catch (err) {
-        console.error("Error loading product details:", err);
-      } finally {
-        setLoading(false);
+        console.warn("API unavailable, trying local data:", err);
       }
+
+      // Fallback to local static data
+      if (!productData) {
+        const localProduct = getProductBySlug(slug);
+        if (localProduct) {
+          const localReviews = getReviewsByProduct(localProduct.id);
+          productData = {
+            ...localProduct,
+            stockQuantity: 100,
+            sku: `ECL-${localProduct.id}`,
+            variants: localProduct.sizes.map((s, i) => ({
+              id: `var-${localProduct.id}-${i}`,
+              value: s.value,
+              label: s.label,
+              inStock: s.inStock,
+              priceOverride: null,
+              name: s.label,
+            })),
+            reviews: localReviews.map(r => ({
+              id: r.id,
+              rating: r.rating,
+              title: r.title,
+              body: r.body,
+              author: r.author,
+              date: r.date,
+              verified: r.verified,
+            })),
+          };
+        }
+      }
+
+      if (productData) {
+        setProduct(productData);
+
+        // Get related products
+        try {
+          if (productData.categorySlug) {
+            const relatedRes = await fetch(`/api/products?category=${productData.categorySlug}&limit=4`);
+            if (relatedRes.ok) {
+              const relatedData = await relatedRes.json();
+              setRelated(relatedData.products.filter((p: any) => p.slug !== slug));
+            } else {
+              throw new Error("API failed");
+            }
+          }
+        } catch {
+          // Fallback related products from local data
+          const localProduct = getProductBySlug(slug);
+          if (localProduct) {
+            setRelated(getRelatedProducts(localProduct, 4));
+          }
+        }
+      }
+
+      setLoading(false);
     };
 
     fetchProduct();
@@ -369,15 +414,18 @@ function ProductDetail({
             Customer Reviews
           </h2>
           <div className="grid md:grid-cols-3 gap-10">
-            {/* Reviews Summary */}
-            <div className="bg-cream-50 p-6 rounded-2xl border border-cream-300 self-start">
-              <h3 className="font-serif text-3xl text-warm-gray-900 mb-1">
-                {product.rating.toFixed(1)}
-              </h3>
-              <StarRating rating={product.rating} />
-              <p className="text-xs text-warm-gray-400 font-sans mt-2">
-                Based on {product.reviewCount} verified buyer reviews
-              </p>
+            {/* Reviews Summary & Form */}
+            <div className="flex flex-col gap-6 self-start">
+              <div className="bg-cream-50 p-6 rounded-2xl border border-cream-300">
+                <h3 className="font-serif text-3xl text-warm-gray-900 mb-1">
+                  {product.rating.toFixed(1)}
+                </h3>
+                <StarRating rating={product.rating} />
+                <p className="text-xs text-warm-gray-400 font-sans mt-2">
+                  Based on {product.reviewCount} verified buyer reviews
+                </p>
+              </div>
+              <ReviewForm productId={product.id} onSuccess={() => window.location.reload()} />
             </div>
 
             {/* Reviews List */}
@@ -423,7 +471,7 @@ function ProductDetail({
             />
             <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {related.map((item: any) => (
-                <ProductCard key={item.id} {...item} />
+                <ProductCard key={item.id} product={item} />
               ))}
             </div>
           </div>

@@ -20,7 +20,8 @@ import { Badge } from "@/components/ui/badge";
 const navLinks = [
   { href: "/shop", label: "Shop" },
   { href: "/shop/skincare", label: "Skincare" },
-  { href: "/shop/makeup", label: "Makeup" },
+  { href: "/shop/beauty", label: "Beauty" },
+  { href: "/shop/nails", label: "Nails" },
   { href: "/about", label: "About" },
   { href: "/contact", label: "Contact" },
 ];
