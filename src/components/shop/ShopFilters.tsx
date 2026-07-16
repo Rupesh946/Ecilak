@@ -141,7 +141,7 @@ export function ShopFilters({ categories }: ShopFiltersProps) {
             step={5}
             value={priceRange}
             onValueChange={handlePriceChange}
-            onValueCommit={handlePriceCommit}
+            onValueCommitted={handlePriceCommit}
             className="text-terracotta-400"
           />
           <div className="flex items-center justify-between text-xs text-warm-gray-500 font-sans">
