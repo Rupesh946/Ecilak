@@ -81,11 +81,11 @@ export function ShopFilters({ categories }: ShopFiltersProps) {
     })}`, { scroll: false });
   };
 
-  const handlePriceChange = (val: [number, number]) => {
-    setPriceRange(val);
+  const handlePriceChange = (val: number[]) => {
+    setPriceRange(val as [number, number]);
   };
   
-  const handlePriceCommit = (val: [number, number]) => {
+  const handlePriceCommit = (val: number[]) => {
     router.push(`?${createQueryString({ 
       minPrice: val[0] > 0 ? val[0].toString() : null,
       maxPrice: val[1] < 150 ? val[1].toString() : null
