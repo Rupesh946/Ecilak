@@ -81,14 +81,16 @@ export function ShopFilters({ categories }: ShopFiltersProps) {
     })}`, { scroll: false });
   };
 
-  const handlePriceChange = (val: number[]) => {
-    setPriceRange(val as [number, number]);
+  const handlePriceChange = (val: number | readonly number[]) => {
+    const arr = Array.isArray(val) ? val : [val, val];
+    setPriceRange(arr as [number, number]);
   };
   
-  const handlePriceCommit = (val: number[]) => {
+  const handlePriceCommit = (val: number | readonly number[]) => {
+    const arr = Array.isArray(val) ? val : [val, val];
     router.push(`?${createQueryString({ 
-      minPrice: val[0] > 0 ? val[0].toString() : null,
-      maxPrice: val[1] < 150 ? val[1].toString() : null
+      minPrice: arr[0] > 0 ? arr[0].toString() : null,
+      maxPrice: arr[1] < 150 ? arr[1].toString() : null
     })}`, { scroll: false });
   };
 
