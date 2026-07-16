@@ -5,7 +5,7 @@ import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProductGrid } from "@/components/ui/ProductGrid";
 import { ShopFilters } from "@/components/shop/ShopFilters";
 import { ShopToolbar } from "@/components/shop/ShopToolbar";
-import { products as localProducts } from "@/data/products";
+import { products as localProducts, type Product } from "@/data/products";
 import { categories as localCategories } from "@/data/categories";
 
 export const dynamic = "force-dynamic";
