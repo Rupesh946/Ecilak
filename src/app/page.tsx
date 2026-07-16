@@ -3,7 +3,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Leaf, Sparkles, Recycle, ShieldCheck, ChevronLeft, ChevronRight, Quote } from "lucide-react";
+import { ArrowRight, Leaf, Sparkles, Recycle, ShieldCheck, ChevronLeft, ChevronRight } from "lucide-react";
 import { useRef, useState, useEffect } from "react";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -11,10 +11,8 @@ import { cn } from "@/lib/utils";
 import { SectionHeading } from "@/components/ui/SectionHeading";
 import { ProductCard } from "@/components/ui/ProductCard";
 import { CategoryCard } from "@/components/ui/CategoryCard";
-import { StarRating } from "@/components/ui/StarRating";
 import { categories } from "@/data/categories";
 import { products } from "@/data/products";
-import { testimonials } from "@/data/reviews";
 import { toast } from "sonner";
 
 export default function HomePage() {
@@ -49,7 +47,6 @@ export default function HomePage() {
       <FeaturedSection featuredProducts={featuredProducts} />
       <ProductShowcaseSection />
       <BrandStorySection />
-      <TestimonialsSection />
       <InstagramSection />
       <NewsletterSection />
     </>
@@ -340,68 +337,6 @@ function BrandStorySection() {
               </p>
             </div>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-}
-
-/* ─── TESTIMONIALS ──────────────────────────────────────────────────── */
-function TestimonialsSection() {
-  const [current, setCurrent] = useState(0);
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % testimonials.length);
-    }, 6000);
-    return () => clearInterval(timer);
-  }, []);
-
-  return (
-    <section className="section-padding bg-warm-gray-900 text-cream-100" aria-label="Customer testimonials">
-      <div className="container-wide max-w-4xl">
-        <SectionHeading
-          title="What Our Customers Say"
-          className="[&_h2]:text-cream-50 [&_p]:text-warm-gray-400"
-        />
-
-        <div className="relative">
-          <Quote className="w-10 h-10 text-terracotta-400/30 mb-6 mx-auto" />
-
-          <blockquote className="text-center">
-            <p className="font-serif text-xl md:text-2xl text-cream-100 leading-relaxed mb-6 italic transition-opacity duration-500">
-              &ldquo;{testimonials[current].body}&rdquo;
-            </p>
-            <footer className="flex flex-col items-center gap-2">
-              <StarRating rating={testimonials[current].rating} size="md" />
-              <cite className="not-italic">
-                <span className="text-sm font-sans font-medium text-cream-200">
-                  {testimonials[current].author}
-                </span>
-                {testimonials[current].verified && (
-                  <span className="text-xs text-terracotta-400 font-sans ml-2">
-                    Verified Buyer
-                  </span>
-                )}
-              </cite>
-            </footer>
-          </blockquote>
-
-          {/* Dots */}
-          <div className="flex items-center justify-center gap-2 mt-8">
-            {testimonials.map((_, i) => (
-              <button
-                key={i}
-                onClick={() => setCurrent(i)}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  i === current
-                    ? "bg-terracotta-400 w-6"
-                    : "bg-warm-gray-600 hover:bg-warm-gray-500"
-                }`}
-                aria-label={`View testimonial ${i + 1}`}
-              />
-            ))}
-          </div>
         </div>
       </div>
     </section>

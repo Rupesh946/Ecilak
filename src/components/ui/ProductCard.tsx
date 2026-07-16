@@ -66,7 +66,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
         <div className="relative aspect-[3/4] rounded-2xl overflow-hidden bg-cream-200 mb-4">
           {/* Primary Image */}
           <Image
-            src={product.images[0]}
+            src={product.images[0] === "/placeholder.png" ? "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=600" : product.images[0]}
             alt={`${product.name} product image`}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
@@ -79,7 +79,7 @@ export function ProductCard({ product, className }: ProductCardProps) {
           {/* Secondary Image (shown on hover) */}
           {hasSecondImage && (
             <Image
-              src={product.images[1]}
+              src={product.images[1] === "/placeholder.png" ? "https://images.unsplash.com/photo-1620916566398-39f1143ab7be?q=80&w=600" : product.images[1]}
               alt={`${product.name} alternate view`}
               fill
               sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"

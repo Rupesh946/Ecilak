@@ -15,10 +15,28 @@ export default function ContactPage() {
     message: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    toast.success("Message sent! We'll get back to you within 24 hours.");
-    setFormData({ name: "", email: "", subject: "", message: "" });
+    setIsSubmitting(true);
+    
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (!res.ok) throw new Error("Failed to send");
+
+      toast.success("Message sent! We'll get back to you within 24 hours.");
+      setFormData({ name: "", email: "", subject: "", message: "" });
+    } catch {
+      toast.error("Failed to send message. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -149,10 +167,11 @@ export default function ContactPage() {
 
               <Button
                 type="submit"
-                className="bg-warm-gray-900 text-cream-50 hover:bg-terracotta-400 font-sans text-sm tracking-wide rounded-xl px-8 gap-2"
+                disabled={isSubmitting}
+                className="bg-warm-gray-900 text-cream-50 hover:bg-terracotta-400 font-sans text-sm tracking-wide rounded-xl px-8 gap-2 disabled:opacity-50"
               >
                 <Send className="w-4 h-4" />
-                Send Message
+                {isSubmitting ? "Sending..." : "Send Message"}
               </Button>
             </form>
           </div>

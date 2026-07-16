@@ -1,6 +1,8 @@
 "use client";
 
 import Link from "next/link";
+import { useState } from "react";
+import { toast } from "sonner";
 import {
   Mail,
   ArrowRight,
@@ -65,6 +67,32 @@ const socialLinks = [
 ];
 
 export function Footer() {
+  const [email, setEmail] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleSubscribe = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email) return;
+
+    setIsLoading(true);
+    try {
+      const res = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) throw new Error("Subscription failed");
+
+      toast.success("Welcome to the Ecilak world!");
+      setEmail("");
+    } catch {
+      toast.error("Failed to subscribe. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <footer className="bg-warm-gray-900 text-cream-200">
       {/* Newsletter Band */}
@@ -80,18 +108,22 @@ export function Footer() {
           </div>
           <form
             className="flex w-full max-w-md gap-2"
-            onSubmit={(e) => e.preventDefault()}
+            onSubmit={handleSubscribe}
             aria-label="Newsletter signup"
           >
             <Input
               type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               placeholder="Your email address"
               className="bg-warm-gray-800 border-warm-gray-700 text-cream-100 placeholder:text-warm-gray-500 focus-visible:ring-terracotta-400"
               required
+              disabled={isLoading}
               aria-label="Email address for newsletter"
             />
             <Button
               type="submit"
+              disabled={isLoading}
               className="bg-terracotta-400 hover:bg-terracotta-500 text-white px-6 shrink-0"
             >
               <ArrowRight className="w-4 h-4" />

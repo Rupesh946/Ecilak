@@ -1,7 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, X, ShoppingBag, ArrowRight } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Minus, Plus, X, ShoppingBag, ArrowRight, Loader2 } from "lucide-react";
 import {
   Sheet,
   SheetContent,
@@ -17,8 +20,20 @@ export function CartDrawer() {
   const { items, removeItem, updateQuantity, subtotal, itemCount } =
     useCartStore();
   const { isOpen, close } = useCartDrawerStore();
+  const [isNavigating, setIsNavigating] = useState(false);
+  const router = useRouter();
   const total = subtotal();
   const count = itemCount();
+
+  const handleNavigate = (path: string) => {
+    setIsNavigating(true);
+    router.push(path);
+    // Add a small delay before closing to allow page transition to start smoothly
+    setTimeout(() => {
+      close();
+      setIsNavigating(false);
+    }, 400);
+  };
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && close()}>
@@ -67,11 +82,20 @@ export function CartDrawer() {
                   key={`${item.id}-${item.size}`}
                   className="flex gap-4 animate-fade-in"
                 >
-                  {/* Product Image Placeholder */}
-                  <div className="w-20 h-24 rounded-xl bg-gradient-to-br from-terracotta-50 to-cream-200 shrink-0 flex items-center justify-center">
-                    <span className="font-serif text-2xl text-terracotta-200">
-                      {item.name.charAt(0)}
-                    </span>
+                  {/* Product Image */}
+                  <div className="w-20 h-24 rounded-xl bg-gradient-to-br from-terracotta-50 to-cream-200 shrink-0 relative overflow-hidden flex items-center justify-center">
+                    {item.image ? (
+                      <Image
+                        src={item.image}
+                        alt={item.name}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <span className="font-serif text-2xl text-terracotta-200">
+                        {item.name.charAt(0)}
+                      </span>
+                    )}
                   </div>
 
                   {/* Product Info */}
@@ -146,27 +170,35 @@ export function CartDrawer() {
               </p>
 
               <div className="space-y-2">
-                <Link
-                  href="/checkout"
-                  onClick={close}
+                <button
+                  onClick={() => handleNavigate("/checkout")}
+                  disabled={isNavigating}
                   className={cn(
                     buttonVariants({ variant: "default" }),
-                    "w-full bg-warm-gray-900 text-cream-50 hover:bg-terracotta-400 transition-colors font-sans flex items-center justify-center gap-2"
+                    "w-full bg-warm-gray-900 text-cream-50 hover:bg-terracotta-500 transition-colors duration-200 font-sans flex items-center justify-center gap-2",
+                    isNavigating && "opacity-70 cursor-not-allowed"
                   )}
                 >
-                  Checkout
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="/cart"
-                  onClick={close}
+                  {isNavigating ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <>
+                      Checkout
+                      <ArrowRight className="w-4 h-4" />
+                    </>
+                  )}
+                </button>
+                <button
+                  onClick={() => handleNavigate("/cart")}
+                  disabled={isNavigating}
                   className={cn(
                     buttonVariants({ variant: "outline" }),
-                    "w-full border-warm-gray-300 text-warm-gray-700 hover:bg-cream-200 font-sans flex items-center justify-center"
+                    "w-full border-warm-gray-300 text-warm-gray-700 hover:bg-cream-200 font-sans flex items-center justify-center",
+                    isNavigating && "opacity-70 cursor-not-allowed"
                   )}
                 >
                   View Full Cart
-                </Link>
+                </button>
               </div>
             </div>
           </>

@@ -107,6 +107,7 @@ export async function POST(req: Request) {
           await resend.emails.send({
             from: "Ecilak Orders <ecilakbusiness@gmail.com>",
             to: recipientEmail,
+            bcc: "ecilakbusiness@gmail.com",
             subject: `Thank you for your order! - #${order.id.substring(0, 8).toUpperCase()}`,
             html: `
               <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; background-color: #FAF7F2; border-radius: 12px;">
