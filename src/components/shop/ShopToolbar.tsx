@@ -42,7 +42,8 @@ export function ShopToolbar({ totalCount, activeFilterCount, children }: ShopToo
     [searchParams]
   );
 
-  const handleSortChange = (value: string) => {
+  const handleSortChange = (value: string | null) => {
+    if (!value) return;
     router.push(`?${createQueryString("sort", value)}`, { scroll: false });
   };
 
