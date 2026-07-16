@@ -21,7 +21,7 @@ const productSchema = z.object({
   isActive: z.boolean().optional(),
 });
 
-import { getProducts, GetProductsOptions } from "@/lib/services/products";
+import { getProducts } from "@/lib/services/products";
 
 export async function GET(req: Request) {
   try {

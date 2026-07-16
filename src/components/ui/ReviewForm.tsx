@@ -46,8 +46,12 @@ export function ReviewForm({ productId, onSuccess }: ReviewFormProps) {
       setRating(0);
       setComment("");
       if (onSuccess) onSuccess();
-    } catch (error: any) {
-      toast.error(error.message);
+    } catch (error) {
+      if (error instanceof Error) {
+        toast.error(error.message);
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     } finally {
       setIsSubmitting(false);
     }

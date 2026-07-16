@@ -179,7 +179,7 @@ export default async function ShopPage({ searchParams }: ShopPageProps) {
                 <Loader2 className="w-10 h-10 animate-spin text-terracotta-400" />
               </div>
             }>
-              <ProductGrid products={products as any} />
+              <ProductGrid products={products as unknown as Product[]} />
             </Suspense>
           </div>
         </div>
