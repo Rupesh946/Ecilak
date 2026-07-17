@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 import { z } from "zod";
-import Razorpay from "razorpay";
+import crypto from "crypto";
 import prisma from "@/lib/prisma";
 import { authOptions } from "@/lib/auth";
 
@@ -41,11 +41,16 @@ export async function GET() {
 
 export async function POST(req: Request) {
   try {
-    const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID || "",
-      key_secret: process.env.RAZORPAY_KEY_SECRET || "",
-    });
+    const merchantId = process.env.PHONEPE_MERCHANT_ID || "";
+    const saltKey = process.env.PHONEPE_SALT_KEY || "";
+    const saltIndex = process.env.PHONEPE_SALT_INDEX || "1";
+    const env = process.env.PHONEPE_ENV || "UAT"; // UAT or PROD
+    const baseUrl = env === "PROD" 
+      ? "https://api.phonepe.com/apis/hermes" 
+      : "https://api-preprod.phonepe.com/apis/pg-sandbox";
     
+    // Use NEXTAUTH_URL for absolute callback URL
+    const appUrl = process.env.NEXTAUTH_URL || "https://www.ecilak.shop";
     const session = await getServerSession(authOptions);
     const jsonBody = await req.json();
     const result = checkoutSchema.safeParse(jsonBody);
@@ -166,27 +171,59 @@ export async function POST(req: Request) {
       },
     });
 
-    // Create Razorpay Order
-    let razorpayOrder;
-    try {
-      razorpayOrder = await razorpay.orders.create({
-        amount: amountInPaise,
-        currency: "INR",
-        receipt: order.id,
-      });
-    } catch (rzpErr) {
-      console.error("Razorpay Order creation failed:", rzpErr);
-      return NextResponse.json({ error: "Razorpay order creation failed" }, { status: 500 });
+    // Create PhonePe Order
+    if (merchantId && saltKey) {
+      try {
+        const data = {
+          merchantId: merchantId,
+          merchantTransactionId: order.id.replace(/[^a-zA-Z0-9]/g, '').substring(0, 34), // PhonePe max length 34
+          merchantUserId: session?.user?.id || `guest_${Date.now()}`,
+          amount: amountInPaise,
+          redirectUrl: `${appUrl}/api/verify-payment?id=${order.id}`,
+          redirectMode: "POST",
+          callbackUrl: `${appUrl}/api/verify-payment?id=${order.id}`,
+          mobileNumber: phone.replace(/\\D/g, "").slice(-10),
+          paymentInstrument: {
+            type: "PAY_PAGE",
+          },
+        };
+
+        const payload = Buffer.from(JSON.stringify(data)).toString("base64");
+        const checksum = crypto.createHash('sha256').update(payload + "/pg/v1/pay" + saltKey).digest('hex') + "###" + saltIndex;
+
+        const response = await fetch(`${baseUrl}/pg/v1/pay`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "X-VERIFY": checksum,
+            "X-CLIENT-ID": merchantId,
+          },
+          body: JSON.stringify({ request: payload }),
+        });
+
+        const phonePeResponse = await response.json();
+        
+        if (phonePeResponse.success && phonePeResponse.data && phonePeResponse.data.instrumentResponse?.redirectInfo?.url) {
+          return NextResponse.json({
+            orderId: order.id,
+            redirectUrl: phonePeResponse.data.instrumentResponse.redirectInfo.url,
+            total,
+          });
+        } else {
+          console.error("PhonePe error response:", phonePeResponse);
+          return NextResponse.json({ error: "Failed to initialize payment gateway" }, { status: 500 });
+        }
+      } catch (err) {
+        console.error("PhonePe Order creation failed:", err);
+        return NextResponse.json({ error: "Payment initiation failed" }, { status: 500 });
+      }
     }
 
+    // Fallback if PhonePe is not configured
     return NextResponse.json({
-      order_id: razorpayOrder.id,
-      amount: razorpayOrder.amount,
-      currency: razorpayOrder.currency,
       orderId: order.id,
       total,
-      razorpayOrderId: razorpayOrder.id,
-      razorpayKeyId: process.env.RAZORPAY_KEY_ID,
+      redirectUrl: null, // Frontend will handle this as a successful test order
     });
   } catch (error) {
     console.error("Checkout / Order creation error:", error);

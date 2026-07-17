@@ -56,16 +56,7 @@ export default function CheckoutPage() {
     shipping = total >= 999 ? 0 : 99;
   }
 
-  // Inject Razorpay checkout SDK script
-  useEffect(() => {
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
+  // PhonePe PG doesn't require frontend SDK injection, it uses standard HTTP redirect
 
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -161,75 +152,17 @@ export default function CheckoutPage() {
         throw new Error(orderData.error || "Failed to initiate transaction");
       }
 
-      const { orderId, razorpayOrderId, razorpayKeyId, amount } = orderData;
+      // 3. GET PHONEPE REDIRECT URL
+      const { orderId, redirectUrl } = orderData;
 
-      // 3. DEFINE PAYMENT SUCCESS REDIRECT LOGIC
-      const handleSuccessfulPayment = () => {
-        toast.success("Payment successful! Your order has been placed.");
+      if (redirectUrl) {
+        // Redirect user to PhonePe PG page
+        window.location.href = redirectUrl;
+      } else {
+        // Fallback if no payment gateway is configured (dev mode)
+        toast.success("Test Mode: Order placed successfully.");
         clearCart();
         router.push(`/checkout/success?orderId=${orderId}&email=${encodeURIComponent(formData.email)}`);
-      };
-
-      // 4. OPEN RAZORPAY CHEKOUT OVERLAY WITH SANDBOX KEYS
-      // Verify if window has Razorpay SDK and sandbox key is configured
-      if ((window as any).Razorpay && razorpayKeyId && !razorpayKeyId.includes("yourKeyId")) {
-        const options = {
-          key: razorpayKeyId,
-          amount: amount, // amount in paise from backend
-          currency: "INR",
-          name: "Ecilak",
-          description: "Premium Beauty & Cosmetics Purchase",
-          order_id: razorpayOrderId,
-          handler: async function (response: any) {
-            try {
-              const verifyRes = await fetch("/api/verify-payment", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  razorpay_order_id: response.razorpay_order_id,
-                  razorpay_payment_id: response.razorpay_payment_id,
-                  razorpay_signature: response.razorpay_signature,
-                  receipt: orderId,
-                }),
-              });
-
-              if (!verifyRes.ok) {
-                const errorData = await verifyRes.json();
-                throw new Error(errorData.error || "Payment verification failed");
-              }
-
-              handleSuccessfulPayment();
-            } catch (err: any) {
-              console.error("Verification failed:", err);
-              toast.error(err.message || "Payment verification failed. Please contact support.");
-            }
-          },
-          prefill: {
-            name: `${formData.firstName} ${formData.lastName}`,
-            email: formData.email,
-            contact: formData.phone,
-          },
-          theme: {
-            color: "#C4705A", // terracotta theme accent color
-          },
-          modal: {
-            ondismiss: function () {
-              toast.info("Payment cancelled by user");
-            }
-          }
-        };
-        
-        const rzp = new (window as any).Razorpay(options);
-        
-        rzp.on("payment.failed", function (response: any) {
-          toast.error(`Payment failed: ${response.error.description}`);
-        });
-        
-        rzp.open();
-      } else {
-        // Fallback for development/testing when Razorpay is not configured
-        toast.success("Test Mode: Order placed successfully without payment gateway.");
-        handleSuccessfulPayment();
       }
     } catch (err: any) {
       console.error(err);
