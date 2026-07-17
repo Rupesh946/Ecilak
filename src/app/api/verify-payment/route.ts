@@ -67,7 +67,7 @@ export async function POST(req: Request) {
           const resend = new Resend(process.env.RESEND_API_KEY);
           try {
             const address = order.address as any;
-            const itemsHtml = order.items.map(item => `<li>${item.quantity}x ${item.variant.product.name} - ${item.variant.name}</li>`).join("");
+            const itemsHtml = order.items.map(item => `<li>${item.quantity}x ${item.variant?.product?.name || "Product"} - ${item.variant?.name || "Standard"}</li>`).join("");
             
             await resend.emails.send({
               from: "Ecilak Orders <orders@ecilak.shop>", // Updated to your custom domain
