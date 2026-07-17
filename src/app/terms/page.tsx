@@ -42,7 +42,7 @@ These terms may be revised at any time without prior notice. Continued use of th
 9. Governing Law
 These terms shall be governed by and construed in accordance with the laws of India.
 
-Business Name:- Ecilak
+Business Name:- MS MAHAKAL SHOPPING HUB
 Email ID:- ecilakbusiness@gmail.com
 Mob No:- +91 91384 09991`}
         </div>

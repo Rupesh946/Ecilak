@@ -44,7 +44,7 @@ You may opt out of marketing communications at any time.
 8. Changes to This Policy
 This privacy policy may be updated periodically. Continued use of the website after changes indicates acceptance of the revised policy.
 
-Business Name:- Ecilak
+Business Name:- MS MAHAKAL SHOPPING HUB
 Email ID:- ecilakbusiness@gmail.com
 Mob No:- +91 91384 09991`}
         </div>

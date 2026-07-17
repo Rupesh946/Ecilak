@@ -24,7 +24,7 @@ After processing, the refund will be credited to the original mode of payment wi
 
 Shipping charges are non-refundable.
 
-Business name:- Ecilak
+Business name:- MS MAHAKAL SHOPPING HUB
 Email:- ecilakbusiness@gmail.com
 Phone no:- +91 91384 09991`}
         </div>

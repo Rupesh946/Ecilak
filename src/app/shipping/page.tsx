@@ -16,7 +16,7 @@ Tracking details are shared once the order is shipped.
 
 The business is not responsible for delays due to courier services or unforeseen circumstances.
 
-Business Name:- Ecilak
+Business Name:- MS MAHAKAL SHOPPING HUB
 Email ID:- ecilakbusiness@gmail.com
 Mob No:- +91 91384 09991`}
         </div>
