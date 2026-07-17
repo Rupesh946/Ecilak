@@ -5,60 +5,48 @@ export default function PrivacyPage() {
         <h1 className="text-4xl md:text-5xl font-serif text-warm-gray-900 mb-8">
           Privacy Policy
         </h1>
-        <div className="prose prose-lg prose-warm-gray font-sans max-w-none">
-          <p>
-            This Privacy Policy outlines how personal information is collected, used, and safeguarded when you interact with this website. By accessing or using the website, you agree to the practices described below.
-          </p>
+        <div className="prose prose-lg prose-warm-gray font-sans max-w-none whitespace-pre-line">
+          {`This Privacy Policy outlines how personal information is collected, used, and safeguarded when you interact with this website. By accessing or using the website, you agree to the practices described below.
 
-          <h2 className="text-2xl font-serif text-warm-gray-900 mt-8 mb-4">1. Information We Collect</h2>
-          <p>We may collect the following types of information:</p>
-          <ul>
-            <li><strong>Personal Information:</strong> Name, phone number, email address, billing/shipping address.</li>
-            <li><strong>Payment Information:</strong> Used to process orders securely through third-party payment gateways.</li>
-            <li><strong>Technical Information:</strong> IP address, browser type, device information, and usage data via cookies or similar technologies.</li>
-          </ul>
+1. Information We Collect
+We may collect the following types of information:
+Personal Information: Name, phone number, email address, billing/shipping address.
+Payment Information: Used to process orders securely through third-party payment gateways.
+Technical Information: IP address, browser type, device information, and usage data via cookies or similar technologies.
 
-          <h2 className="text-2xl font-serif text-warm-gray-900 mt-8 mb-4">2. How We Use Your Information</h2>
-          <ul>
-            <li>To process and deliver orders.</li>
-            <li>To send transactional communications such as order updates or shipping alerts.</li>
-            <li>To respond to customer inquiries or service requests.</li>
-            <li>To improve website functionality, services, and user experience.</li>
-            <li>For marketing purposes (only with your explicit consent).</li>
-          </ul>
+2. How We Use Your Information
+To process and deliver orders.
+To send transactional communications such as order updates or shipping alerts.
+To respond to customer inquiries or service requests.
+To improve website functionality, services, and user experience.
+For marketing purposes (only with your explicit consent).
 
-          <h2 className="text-2xl font-serif text-warm-gray-900 mt-8 mb-4">3. Data Sharing</h2>
-          <ul>
-            <li>We do not sell, rent, or trade your personal data.</li>
-            <li>We may share necessary information with third-party service providers such as payment gateways, delivery partners, or IT service providers — only to fulfill your order or maintain the website.</li>
-            <li>Personal information may be disclosed if required by law or legal proceedings.</li>
-          </ul>
+3. Data Sharing
+We do not sell, rent, or trade your personal data.
+We may share necessary information with third-party service providers such as payment gateways, delivery partners, or IT service providers — only to fulfill your order or maintain the website.
+Personal information may be disclosed if required by law or legal proceedings.
 
-          <h2 className="text-2xl font-serif text-warm-gray-900 mt-8 mb-4">4. Data Security</h2>
-          <p>
-            We implement reasonable security measures to protect your data from unauthorized access, alteration, or disclosure. However, no online transmission is 100% secure. You acknowledge this risk when using the site.
-          </p>
+4. Data Security
+We implement reasonable security measures to protect your data from unauthorized access, alteration, or disclosure.
+However, no online transmission is 100% secure. You acknowledge this risk when using the site.
 
-          <h2 className="text-2xl font-serif text-warm-gray-900 mt-8 mb-4">5. Cookies and Tracking Technologies</h2>
-          <p>
-            Cookies are used to personalize your experience, analyze site traffic, and provide relevant ads. You can manage or disable cookies via your browser settings, although this may affect site functionality.
-          </p>
+5. Cookies and Tracking Technologies
+Cookies are used to personalize your experience, analyze site traffic, and provide relevant ads.
+You can manage or disable cookies via your browser settings, although this may affect site functionality.
 
-          <h2 className="text-2xl font-serif text-warm-gray-900 mt-8 mb-4">6. Third-Party Links</h2>
-          <p>
-            This website may contain links to third-party websites. We are not responsible for the privacy practices or content of those websites.
-          </p>
+6. Third-Party Links
+This website may contain links to third-party websites. We are not responsible for the privacy practices or content of those websites.
 
-          <h2 className="text-2xl font-serif text-warm-gray-900 mt-8 mb-4">7. Your Rights</h2>
-          <ul>
-            <li>You may request access to or correction of your personal data.</li>
-            <li>You may opt out of marketing communications at any time.</li>
-          </ul>
+7. Your Rights
+You may request access to or correction of your personal data.
+You may opt out of marketing communications at any time.
 
-          <h2 className="text-2xl font-serif text-warm-gray-900 mt-8 mb-4">8. Changes to This Policy</h2>
-          <p>
-            This privacy policy may be updated periodically. Continued use of the website after changes indicates acceptance of the revised policy.
-          </p>
+8. Changes to This Policy
+This privacy policy may be updated periodically. Continued use of the website after changes indicates acceptance of the revised policy.
+
+Business Name:- Ecilak
+Email ID:- ecilakbusiness@gmail.com
+Mob No:- +91 91384 09991`}
         </div>
       </div>
     </div>

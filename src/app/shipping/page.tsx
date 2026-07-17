@@ -5,23 +5,20 @@ export default function ShippingPage() {
         <h1 className="text-4xl md:text-5xl font-serif text-warm-gray-900 mb-8">
           Shipping Policy
         </h1>
-        <div className="prose prose-lg prose-warm-gray font-sans max-w-none">
-          <p>
-            Orders are typically processed within 1–3 business days.
-          </p>
+        <div className="prose prose-lg prose-warm-gray font-sans max-w-none whitespace-pre-line">
+          {`Orders are typically processed within 1–3 business days.
 
-          <h2 className="text-2xl font-serif text-warm-gray-900 mt-8 mb-4">Delivery Time</h2>
-          <ul>
-            <li><strong>Standard:</strong> 5–10 business days.</li>
-            <li><strong>Express:</strong> 3-5 business days.</li>
-          </ul>
-          
-          <p>
-            Tracking details are shared once the order is shipped.
-          </p>
-          <p>
-            The business is not responsible for delays due to courier services or unforeseen circumstances.
-          </p>
+Delivery time , 
+  Standard  5–10 business days.
+  Express     3-5 business days.
+
+Tracking details are shared once the order is shipped.
+
+The business is not responsible for delays due to courier services or unforeseen circumstances.
+
+Business Name:- Ecilak
+Email ID:- ecilakbusiness@gmail.com
+Mob No:- +91 91384 09991`}
         </div>
       </div>
     </div>
