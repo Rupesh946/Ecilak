@@ -46,10 +46,11 @@ const shopLinks = [
 ];
 
 const helpLinks = [
-  { href: "/faq", label: "FAQ" },
   { href: "/contact", label: "Contact Us" },
-  { href: "/refund-policy", label: "Returns & Refunds" },
-  { href: "/terms", label: "Terms of Service" },
+  { href: "/refund", label: "Refund Policy" },
+  { href: "/returns", label: "Return Policy" },
+  { href: "/shipping", label: "Shipping Policy" },
+  { href: "/terms", label: "Terms and Conditions" },
   { href: "/privacy", label: "Privacy Policy" },
 ];
 
