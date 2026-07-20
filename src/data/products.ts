@@ -119,40 +119,6 @@ export const products: Product[] = [
     isBestseller: true,
   },
   {
-    id: "4",
-    slug: "radiance-dtan-pack",
-    name: "Radiance D-Tan Pack",
-    price: 349,
-    images: [
-      "/images/products/Product4(Dtan) (1).jpeg",
-      "/images/products/Product4(Dtan) (2).jpeg",
-      "/images/products/Product4(Dtan) (3).jpeg",
-      "/images/products/Product4(Dtan) (4).jpeg",
-      "/images/products/Product4(Dtan) (5).jpeg",
-    ],
-    category: "Skincare",
-    categorySlug: "skincare",
-    shortDescription:
-      "A powerful de-tanning mask with milk extracts and kojic acid for visibly brighter, even-toned skin.",
-    description:
-      "Our Radiance D-Tan Pack is your go-to solution for stubborn sun tan and uneven skin tone. Formulated with a potent blend of milk extracts, kojic acid, and licorice root extract, this creamy mask works to gently dissolve tan, lighten pigmentation, and restore your skin's natural radiance in just 15 minutes. Enriched with hyaluronic acid and aloe vera for deep hydration, it leaves skin feeling soft, supple, and visibly brighter after every use.",
-    ingredients:
-      "Aqua, Kaolin, Kojic Acid, Lactic Acid, Glycyrrhiza Glabra Root Extract, Sodium Hyaluronate, Aloe Barbadensis Leaf Juice, Niacinamide, Titanium Dioxide, Glycerin, Cetearyl Alcohol, Phenoxyethanol.",
-    howToUse:
-      "Apply a thick, even layer on cleansed face, neck, and arms. Avoid eye area. Leave on for 15-20 minutes. Massage gently with wet fingers in circular motions and rinse off with lukewarm water. Use 2-3 times a week for best results.",
-    rating: 4.5,
-    reviewCount: 198,
-    sizes: [
-      { label: "100 g", value: "100g", inStock: true },
-      { label: "200 g", value: "200g", inStock: true },
-    ],
-    inStock: true,
-    tags: ["dtan", "brightening", "tan-removal"],
-    skinType: ["All Skin Types", "Sun-Damaged Skin"],
-    concern: ["Tan Removal", "Uneven Tone", "Dullness"],
-    isBestseller: true,
-  },
-  {
     id: "5",
     slug: "fresh-guard-sweat-pads",
     name: "Fresh Guard Sweat Pads",
@@ -278,38 +244,6 @@ export const products: Product[] = [
     skinType: ["All Skin Types"],
     concern: ["Dark Circles", "Puffiness", "Fine Lines"],
     isBestseller: true,
-  },
-  {
-    id: "9",
-    slug: "charcoal-face-detox-mask",
-    name: "Charcoal Face Detox Mask",
-    price: 379,
-    images: [
-      "/images/products/Prouduct9(FaceDetox) (1).jpeg",
-      "/images/products/Prouduct9(FaceDetox) (2).jpeg",
-      "/images/products/Prouduct9(FaceDetox) (3).jpeg",
-    ],
-    category: "Skincare",
-    categorySlug: "skincare",
-    shortDescription:
-      "A deep-cleansing activated charcoal peel-off mask that detoxifies, tightens pores, and reveals fresh skin.",
-    description:
-      "Give your skin a deep detox with our Charcoal Face Detox Mask. This powerful peel-off formula combines activated bamboo charcoal with bentonite clay, tea tree oil, and witch hazel to draw out deep-seated impurities, excess sebum, and environmental pollutants. As you peel it off, it takes blackheads and dead skin with it, revealing a clearer, tighter, and more refined complexion underneath. Green tea and vitamin E provide antioxidant protection to freshly cleansed skin.",
-    ingredients:
-      "Aqua, Polyvinyl Alcohol, Charcoal Powder, Bentonite, Hamamelis Virginiana Water, Melaleuca Alternifolia Leaf Oil, Camellia Sinensis Leaf Extract, Tocopheryl Acetate, Glycerin, Carbomer, Phenoxyethanol.",
-    howToUse:
-      "Apply an even, thick layer to clean, dry face avoiding eyebrows, hairline, and eye area. Leave for 20-25 minutes until completely dry. Peel off from the bottom edge upward in a slow, steady motion. Rinse any residue with lukewarm water. Follow with toner and moisturizer. Use 1-2 times per week.",
-    rating: 4.5,
-    reviewCount: 178,
-    sizes: [
-      { label: "60 g", value: "60g", inStock: true },
-      { label: "120 g", value: "120g", inStock: true },
-    ],
-    inStock: true,
-    tags: ["detox", "charcoal", "peel-off"],
-    skinType: ["Oily Skin", "Combination Skin", "Acne-Prone Skin"],
-    concern: ["Blackheads", "Pores", "Oiliness", "Detox"],
-    isNew: true,
   },
 ];
 

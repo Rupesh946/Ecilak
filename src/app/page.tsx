@@ -246,8 +246,6 @@ function ProductShowcaseSection() {
     { src: "/images/products/Product6(FaceWash) (3).jpeg", alt: "Glow Revival Face Wash", span: "col-span-2 row-span-2" },
     { src: "/images/products/Product3(Nail Extension) (2).jpeg", alt: "Luxe Nail Extensions", span: "" },
     { src: "/images/products/Product8(UnderEyeMask) (2).jpeg", alt: "Hydra Glow Under Eye Masks", span: "" },
-    { src: "/images/products/Product4(Dtan) (2).jpeg", alt: "Radiance D-Tan Pack", span: "" },
-    { src: "/images/products/Prouduct9(FaceDetox) (1).jpeg", alt: "Charcoal Face Detox Mask", span: "" },
   ];
 
   return (
