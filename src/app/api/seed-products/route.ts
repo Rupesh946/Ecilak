@@ -22,11 +22,9 @@ export async function GET() {
       { name: "Wax Strips", slug: "wax-strips", cat: makeup.id, image: "/images/products/Productt 1(Wax Strips) (1).jpeg", price: 299 },
       { name: "Nose Strips", slug: "nose-strips", cat: skincare.id, image: "/images/products/Product2(Nose Strips) (1).jpeg", price: 199 },
       { name: "Nail Extension", slug: "nail-extension", cat: makeup.id, image: "/images/products/Product3(Nail Extension) (1).jpeg", price: 499 },
-      { name: "D-tan Pack", slug: "dtan", cat: skincare.id, image: "/images/products/Product4(Dtan) (1).jpeg", price: 349 },
       { name: "Sweat Pads", slug: "sweat-pads", cat: skincare.id, image: "/images/products/Product5(sweatPads) (1).jpeg", price: 149 },
       { name: "Face Wash", slug: "face-wash", cat: skincare.id, image: "/images/products/Product6(FaceWash) (1).jpeg", price: 249 },
       { name: "Under Eye Mask", slug: "under-eye-mask", cat: skincare.id, image: "/images/products/Product8(UnderEyeMask) (1).jpeg", price: 399 },
-      { name: "Face Detox", slug: "face-detox", cat: skincare.id, image: "/images/products/Prouduct9(FaceDetox) (1).jpeg", price: 449 },
     ];
 
     console.log('Adding real products...');

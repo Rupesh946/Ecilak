@@ -29,6 +29,9 @@ export async function getProducts(options: GetProductsOptions) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const where: any = {
     isActive: true,
+    name: {
+      notIn: ['Face Detox', 'D-tan Pack']
+    }
   };
 
   if (query) {
