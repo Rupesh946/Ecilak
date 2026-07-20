@@ -49,12 +49,14 @@ async function getShopData(searchParams: ShopPageProps["searchParams"]) {
       getProducts(queryOptions)
     ]);
 
-    const formattedCategories = categories.map((c: { id: string; name: string; slug: string; _count: { products: number } }) => ({
-      id: c.id,
-      name: c.name,
-      slug: c.slug,
-      productCount: c._count.products
-    }));
+    const formattedCategories = categories
+      .map((c: { id: string; name: string; slug: string; _count: { products: number } }) => ({
+        id: c.id,
+        name: c.name,
+        slug: c.slug,
+        productCount: c._count.products
+      }))
+      .filter((c) => c.productCount > 0);
 
     return {
       products: productData.products,
@@ -108,12 +110,14 @@ async function getShopData(searchParams: ShopPageProps["searchParams"]) {
     const start = (page - 1) * limit;
     const paginatedProducts = filteredProducts.slice(start, start + limit);
 
-    const formattedCategories = localCategories.map(c => ({
-      id: c.slug,
-      name: c.name,
-      slug: c.slug,
-      productCount: c.productCount
-    }));
+    const formattedCategories = localCategories
+      .map((c) => ({
+        id: c.slug,
+        name: c.name,
+        slug: c.slug,
+        productCount: c.productCount,
+      }))
+      .filter((c) => c.productCount > 0);
 
     return {
       products: paginatedProducts,
